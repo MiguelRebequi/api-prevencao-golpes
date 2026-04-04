@@ -17,3 +17,37 @@ Projeto da Faculdade sobre uma API de prevenção de Golpes de compras não reco
 
 ## ☁️ Link para o Deploy
 *(O link do deploy na nuvem será adicionado aqui em breve)*
+
+## 📌 Rota: Criar Novo Usuário
+
+**Método:** `POST`
+**URL:** `/usuarios`
+**Descrição:** Cadastra um novo usuário no sistema simulando o banco de dados na memória.
+
+### Corpo da Requisição (Request Body)
+O Front-end deve enviar um objeto JSON com a seguinte estrutura. 
+**Atenção:** O campo `id` não deve ser enviado, pois é gerado automaticamente pelo banco.
+
+```json
+{
+  "nomeUsuario": "String (Obrigatório) - Nome completo do cliente",
+  "senha": "String (Obrigatório) - Senha de acesso",
+  "email": "String (Obrigatório, Único) - E-mail para contato",
+  "cpf": "String (Obrigatório, Único, 11 dígitos) - Documento de identificação"
+}
+```
+### Exemplo de Envio:
+```json
+{
+  "nomeUsuario": "Joao Silva",
+  "senha": "senhaSegura123",
+  "email": "joao@email.com",
+  "cpf": "12345678900"
+}
+```
+### Respostas Esperadas (Responses)
+🟢 200 OK (ou 201 Created): Retorna o mesmo objeto JSON, mas agora com o "id" gerado pelo sistema.
+
+🔴 400 Bad Request: Caso falte algum dado obrigatório.
+
+🔴 500 Internal Server Error: Caso tente cadastrar um CPF ou E-mail que já existe (Unique Constraint).
