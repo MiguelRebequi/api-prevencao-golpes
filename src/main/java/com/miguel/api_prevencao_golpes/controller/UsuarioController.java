@@ -3,7 +3,6 @@ package com.miguel.api_prevencao_golpes.controller;
 import java.util.List;
 import java.util.Optional;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,7 +30,7 @@ public class UsuarioController {
         return usuarioService.findAll();
     }
 
-    @GetMapping({"id"})
+    @GetMapping({"/{id}"})
     public ResponseEntity<Usuario> getUsuariosById(@PathVariable Long id) {
         // Uma Classe Optional usuario atribuida pelo metodo de findUsuarioByID(Evitando a possibilidade de vir um nulo)
         Optional<Usuario> usuario = usuarioService.findUsuariobyID(id);
