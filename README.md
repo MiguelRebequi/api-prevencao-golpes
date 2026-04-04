@@ -2,7 +2,7 @@
 Projeto da Faculdade sobre uma API de prevenção de Golpes de compras não reconhecidas de Cartão de Crédito.
 
 ## 🛠️ Tecnologias Utilizadas
-* **Linguagem:** Java 17+
+* **Linguagem:** Java 21+
 * **Framework Backend:** Spring Boot
 * **Banco de Dados:** PostgreSQL (Nuvem)
 * **Segurança:** Spring Security com autenticação JWT

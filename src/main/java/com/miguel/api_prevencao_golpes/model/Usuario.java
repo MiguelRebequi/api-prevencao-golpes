@@ -19,18 +19,29 @@ public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "nome_usuario", nullable = false)
+    // Troquei do atributo para o Banco de Dados, não pode ser nulo e o limie de caracteres é 100. (Deixei o limite maior que o conhecido no mundo)
+    @Column(name = "nome_usuario", nullable = false, length = 100)
+    
     private String nomeUsuario;
+
     // Futuramente faremos algum meio de ocultar a senha para não estar exposta no meu banco de dados.
-    @Column(nullable = false, unique = false)
+    // não pode ser nulo, único e o limie de caracteres é 255. (Como futuramente, a ideia seria inserir uma criptografia, apenas reforcei o limite comum de um dado na tabela) 
+    @Column(nullable = false, unique = false, length = 255)
     private String senha;
+
     // Por enquanto, acredito que não usaremos tão cedo o Email.
-    @Column(nullable = false, unique = true)
+    // não pode ser nulo, único e o limie de caracteres é 150.
+    @Column(nullable = false, unique = true, length = 150)
     private String email;
+
     // Inicialmente, colocarei por permitir nulo, pois eu não sei se usarei o CPF para algo)
-    // Por padrão, permite nulo, mas deixarei para poder inverter, caso ache melhor.
-    @Column(nullable = true, unique = true)
+    // não pode ser nulo, único e o limie de caracteres é 11.
+    // Obs: Por padrão, permite nulo, mas deixarei para poder inverter, caso ache melhor.
+    @Column(nullable = true, unique = true, length = 11)
     private String cpf;
+
+    // Estado de ativo ou desativo para os métodos de CRUD, ou seja, não irei deletar os dados apenas desativa-los
+    private boolean ativo = true;
 
     // Criarei um construtor vazio e um construtor com atributos(Mockados?)
     // Esse serve para a Spring
@@ -84,6 +95,14 @@ public class Usuario {
 
     public void setCpf(String cpf) {
         this.cpf = cpf;
+    }
+
+    public boolean isAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(boolean ativo) {
+        this.ativo = ativo;
     }
 
 }
