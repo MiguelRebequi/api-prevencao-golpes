@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -59,8 +60,22 @@ public class UsuarioController {
         if (deletado) {
             // Status 204 Not Content: sucesso sem aparecer um texto
             return ResponseEntity.noContent().build();
+        } else{
+            // Status 404 Not found: não encontrado esse ID
+            return ResponseEntity.notFound().build();
         }
-        // Status 404 Not found: não encontrado esse ID
-        return ResponseEntity.notFound().build();
+        
+    }
+
+    @PatchMapping("/{id}/reativar")
+    public ResponseEntity<Void> reactivateUsuario(@PathVariable Long id){
+        boolean reativado = usuarioService.enableUsuarioByID(id);
+        if(reativado) {
+            // Status 204 Not Content: sucesso sem aparecer um texto
+            return ResponseEntity.noContent().build();
+        } else {
+            // Status 404 Not found: não encontrado esse ID
+            return ResponseEntity.notFound().build();
+        }
     }
 }

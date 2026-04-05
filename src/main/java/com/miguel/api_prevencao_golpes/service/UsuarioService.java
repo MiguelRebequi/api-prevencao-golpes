@@ -40,6 +40,16 @@ public class UsuarioService {
         return false;
     }
 
+    public boolean enableUsuarioByID(Long id){
+        Optional<Usuario> usuarioEncontrado = findUsuarioById(id);
+        if(usuarioEncontrado.isPresent()){
+            usuarioEncontrado.get().setAtivo(true);
+            return true;
+        }
+        
+        return false;
+    }
+
     public Usuario saveUsuario(Usuario usuario){
         usuario.setId(contador.incrementAndGet());
         usuarios.add(usuario);
@@ -62,4 +72,5 @@ public class UsuarioService {
 
         return Optional.empty();
     }
+    
 }
