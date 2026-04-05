@@ -1,4 +1,4 @@
-# api-prevencao-golpes 0.1.0
+# api-prevencao-golpes 0.2.0
 Projeto da Faculdade sobre uma API de prevenção de Golpes de compras não reconhecidas de Cartão de Crédito.
 
 ## 🛠️ Tecnologias Utilizadas
