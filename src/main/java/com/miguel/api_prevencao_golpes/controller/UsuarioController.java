@@ -5,9 +5,12 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,7 +36,7 @@ public class UsuarioController {
     @GetMapping({"/{id}"})
     public ResponseEntity<Usuario> getUsuariosById(@PathVariable Long id) {
         // Uma Classe Optional usuario atribuida pelo metodo de findUsuarioByID(Evitando a possibilidade de vir um nulo)
-        Optional<Usuario> usuario = usuarioService.findUsuariobyID(id);
+        Optional<Usuario> usuario = usuarioService.findUsuarioById(id);
         // Verifica se usuário tem os dados, se tiver entrega um OK, se não envia um erro 404
         return usuario.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
@@ -41,7 +44,38 @@ public class UsuarioController {
     // Uma requisição post com RequestBody(Um Json) do Objeto Usuário
     @PostMapping
     public Usuario createUsuario(@RequestBody Usuario usuario){
-        return usuarioService.save(usuario);
+        return usuarioService.saveUsuario(usuario);
     }
 
+    @PutMapping({"/{id}"})
+    public ResponseEntity<Usuario> updateUsuario(@PathVariable Long id, @RequestBody Usuario dadosNovos){
+        Optional<Usuario> usuarioAtualizado = usuarioService.updateUsuario(id, dadosNovos);
+
+        return usuarioAtualizado.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @DeleteMapping({"/{id}"})
+    public ResponseEntity<Void> deleteUsuario(@PathVariable Long id){
+        boolean deletado = usuarioService.disableUsuarioById(id);
+        if (deletado) {
+            // Status 204 Not Content: sucesso sem aparecer um texto
+            return ResponseEntity.noContent().build();
+        } else{
+            // Status 404 Not found: não encontrado esse ID
+            return ResponseEntity.notFound().build();
+        }
+        
+    }
+
+    @PatchMapping("/{id}/reativar")
+    public ResponseEntity<Void> reactivateUsuario(@PathVariable Long id){
+        boolean reativado = usuarioService.enableUsuarioByID(id);
+        if(reativado) {
+            // Status 204 Not Content: sucesso sem aparecer um texto
+            return ResponseEntity.noContent().build();
+        } else {
+            // Status 404 Not found: não encontrado esse ID
+            return ResponseEntity.notFound().build();
+        }
+    }
 }
