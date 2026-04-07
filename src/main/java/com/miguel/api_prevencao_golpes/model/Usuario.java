@@ -1,10 +1,15 @@
 package com.miguel.api_prevencao_golpes.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -19,9 +24,9 @@ public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    // Troquei do atributo para o Banco de Dados, não pode ser nulo e o limie de caracteres é 100. (Deixei o limite maior que o conhecido no mundo)
+
+    // Troquei o nome do atributo para o padrão do Banco de Dados, não pode ser nulo e o limie de caracteres é 100. (Deixei o limite maior que o conhecido no mundo)
     @Column(name = "nome_usuario", nullable = false, length = 100)
-    
     private String nomeUsuario;
 
     // Futuramente faremos algum meio de ocultar a senha para não estar exposta no meu banco de dados.
@@ -43,13 +48,19 @@ public class Usuario {
     // Estado de ativo ou desativo para os métodos de CRUD, ou seja, não irei deletar os dados apenas desativa-los
     private boolean ativo = true;
 
+    // Mapei qual o outro atributo da outra classe pego.
+    // Tudo feito a classe Usuário será feito a classe cartão
+    // Se um cartão estiver sem dono, será excluído.
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Cartao> cartoes = new ArrayList<>();
+
     // Criarei um construtor vazio e um construtor com atributos(Mockados?)
     // Esse serve para a Spring
     public Usuario() {
     }
 
     // Esse serve para testar e fazer o Postman, por exemplo.
-        // Observa que eu criei sem o ID por ser incremental pelo Atomic em UsuarioService.
+    // Observa que eu criei sem o ID por ser incremental pelo Atomic em UsuarioService.
     public Usuario(String nomeUsuario, String senha, String email, String cpf) {
         this.nomeUsuario = nomeUsuario;
         this.senha = senha;
@@ -103,6 +114,16 @@ public class Usuario {
 
     public void setAtivo(boolean ativo) {
         this.ativo = ativo;
+    }
+
+    public void adicionarCartao(Cartao cartao) {
+        this.cartoes.add(cartao);
+        cartao.setUsuario(this); // Garantindo que todo cartão tem um dono especificado.
+    }
+
+    public void removerCartao(Cartao cartao) {
+        this.cartoes.remove(cartao);
+        cartao.setUsuario(null); // Remove o vínculo com o antigo dono.
     }
 
 }
