@@ -45,7 +45,9 @@ public class Usuario {
     @Column(nullable = true, unique = true, length = 11)
     private String cpf;
 
-    // Estado de ativo ou desativo para os métodos de CRUD, ou seja, não irei deletar os dados apenas desativa-los
+    // Estado de ativo ou desativo para os métodos de CRUD, ou seja, não irei deletar os dados apenas desativa-los.
+        // Especifiquei que não pode haver tipo Nulo
+    @Column(nullable = false)
     private boolean ativo = true;
 
     // Mapei qual o outro atributo da outra classe pego.
@@ -114,6 +116,10 @@ public class Usuario {
 
     public void setAtivo(boolean ativo) {
         this.ativo = ativo;
+    }
+
+    public List<Cartao> getCartoes(){
+        return cartoes;
     }
 
     public void adicionarCartao(Cartao cartao) {

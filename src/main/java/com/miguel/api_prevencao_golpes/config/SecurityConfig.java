@@ -16,7 +16,8 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
                 // Deixamos apenas a liberação para os testes da nossa API
-                .requestMatchers("/usuarios/**").permitAll()   
+                .requestMatchers("/usuarios/**").permitAll()
+                .requestMatchers("/error").permitAll()  
                 .anyRequest().authenticated()                  
             );
 

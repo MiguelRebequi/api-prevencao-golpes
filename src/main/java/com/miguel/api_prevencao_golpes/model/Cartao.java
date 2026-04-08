@@ -2,6 +2,8 @@ package com.miguel.api_prevencao_golpes.model;
 
 import java.math.BigDecimal;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -36,11 +38,15 @@ public class Cartao {
     @Column(nullable = false, length = 20)
     private TipoCartao tipo;
 
+    // Estado de ativo ou desativo para os métodos de CRUD, ou seja, não irei deletar os dados apenas desativa-los.
+    @Column(nullable = false)
+    private boolean ativo = true;
 
     // Chave Estrangeira
         // Pegaremos a coluna ID da tabelaa usuário e não pode ser nulo.
     @ManyToOne // Lê-se: "Muitos Cartões pertencem a Um Usuário"
     @JoinColumn(name = "usuario_id", nullable = false)
+    @JsonIgnore
     private Usuario usuario;
 
     public Cartao(){
@@ -91,6 +97,14 @@ public class Cartao {
 
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
+    }
+
+    public boolean isAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(boolean ativo) {
+        this.ativo = ativo;
     }
 
     
